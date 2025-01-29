@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  gateway-service:
+    build:
+      context: ./gateway-service
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - crypto-analyzer
+    networks:
+      - microservices-network
+
+  crypto-analyzer:
+    build:
+      context: ./crypto-analyzer
+    container_name: crypto-analyzer
+    ports:
+      - "8081:8080" # Изменён порт хоста на 8081
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crypto_db
+      SPRING_DATASOURCE_USERNAME: cryptouser
+      SPRING_DATASOURCE_PASSWORD: userC2025
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db
+    networks:
+      - microservices-network
+
+#  crypto-analyzer:
+#    ports:
+#      - "8081:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crypto_db
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#
+#  db:
+#    healthcheck:
+#      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+
+  db:
+    image: mysql:8.0
+    container_name: crypto-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootC2025
+      MYSQL_DATABASE: crypto_db
+      MYSQL_USER: cryptouser
+      MYSQL_PASSWORD: userC2025
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - microservices-network
+
+volumes:
+  db_data:
+
+networks:
+  microservices-network:
+    driver: bridge

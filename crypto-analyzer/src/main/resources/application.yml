@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: CryptoAnalyzer
+  datasource:
+#    url: jdbc:mysql://localhost:3306/crypto_db
+#    for localhost
+    url: jdbc:mysql://db:3306/crypto_db
+#    for Docker
+#    driverClassName: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: cryptouser
+    password: userC2025
+  jpa:
+    open-in-view: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    root: INFO
+    org:
+      apache:
+        logging:
+          log4j=DEBUG:
+
+server:
+  port: 8080
+#  revert to 8081 for NON docker usage
+#  revert to 8080 for  Docker usage
+
+currencies:
+  currencyCode:
+  - BTC
+  - ETH
+  - DOGE
+  - LTC
+  - XRP

@@ -1,0 +1,7 @@
+currencies:
+  currencyCode:
+    - BTC
+    - ETH
+    - DOGE
+    - LTC
+    - XRP

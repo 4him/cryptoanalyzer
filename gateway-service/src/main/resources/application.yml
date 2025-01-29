@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      routes:
+        - id: crypto-analyzer
+          uri: http://crypto-analyzer:8080
+          predicates:
+            - Path=/crypto/**
+        - id: file-upload
+          uri: http://crypto-analyzer:8080
+          predicates:
+            - Path=/data/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+server:
+  port: 8080
