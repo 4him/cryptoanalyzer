@@ -32,12 +32,13 @@ frame. However, for some of them it might be more accurate to check six months o
 - Malicious users will always exist, so it will be really beneficial if at least we can rate limit them (based on IP)
 
 ## Installation
-Clone both projects from repo.
-Run command below
+This project was created using OpenJDK Runtime Environment 17. You can follow instructions below to run the project.
+Clone this project in some directory on your computer. Then run command below
+
 ``` bash 
 mvn clean package
 ```
-After all is compiled successful run next command
+After all was compiled successful run next command
 ``` bash
 docker-compose up --build
 ```
@@ -50,7 +51,7 @@ The CryptoStatsController is a REST controller providing an API for analyzing cr
 **Endpoint:**
 `GET /crypto/stats/normalized`
 
-**Description:** Returns a list of all cryptocurrencies sorted by their normalized range (from highest to lowest). The normalized range is calculated as the difference between the maximum and minimum value, divided by the minimum value.
+**Description:** Returns a list of all cryptocurrencies sorted by their normalized range (from highest to lowest). The normalized range is calculated as the difference between the maximum and minimum value, divided by the minimum value.
 
 **Sample Response:**
 ```json
@@ -66,11 +67,10 @@ The CryptoStatsController is a REST controller providing an API for analyzing cr
         "statistics": {
             "normalized_range": 0.51786
         }
-    },
+    }
 
 ]
 ```
-
 
 ## 2. Statistics for a Specific Cryptocurrency (Oldest, Newest, Min, Max Prices)
 **Endpoint:**
@@ -98,8 +98,6 @@ The maximum price.
     }
 }
 ```
-
-
 
 ## 3. Cryptocurrency with the Highest Normalized Range for a Given Day ##
 **Endpoint:**
