@@ -22,11 +22,26 @@ spring:
 
 logging:
   level:
-    root: INFO
     org:
-      apache:
-        logging:
-          log4j=DEBUG:
+    springframework:
+      security: DEBUG
+      web: DEBUG
+      data: DEBUG
+      hibernate: DEBUG
+      jpa: DEBUG
+      sql: DEBUG
+
+#logging:
+#  level:
+#    root: INFO
+#    org:
+#      apache:
+#        logging:
+#          log4j=DEBUG:
+#      springframework:
+#        boot:
+#          autoconfigure:
+#            security: INFO
 
 server:
   port: 8080
