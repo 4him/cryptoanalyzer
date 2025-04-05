@@ -165,8 +165,6 @@ public class CryptoStatsServiceImpl implements CryptoStatsService {
 
         return CryptoModel.builder()
                 .currencyCode(data.get(0).getCurrencyCode())
-//                .maxPrice(maxPrice)
-//                .minPrice(minPrice)
                 .normalizedRange(normalizedRange)
                 .build();
     }
