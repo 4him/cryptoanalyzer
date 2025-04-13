@@ -6,6 +6,7 @@ import com.assignment.cryptoanalyzer.dto.CryptoDTO;
 import com.assignment.cryptoanalyzer.dto.StatsDTO;
 import com.assignment.cryptoanalyzer.entity.CryptoCurrency;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -79,6 +80,7 @@ class CryptoStatsServiceImplTest {
         assertEquals("01-06-2021 00:00:00", result.getStatsDTO().getOldestDateTime());
     }
 
+    @Disabled
     @Test
     void getCurrencyStatsOrderNormalizedRange() {
     }

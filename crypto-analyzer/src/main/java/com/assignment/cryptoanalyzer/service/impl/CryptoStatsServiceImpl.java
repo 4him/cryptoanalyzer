@@ -121,20 +121,22 @@ public class CryptoStatsServiceImpl implements CryptoStatsService {
     private CryptoModel calculateStats(String currencyCode, boolean includeNormalized, boolean includeStats) {
         List<CryptoCurrency> data = cryptoService.getCryptoData(currencyCode);
 
-        BigDecimal maxPrice = includeStats ? calculateMaxPrice(data) : null;
-        BigDecimal minPrice = includeStats ? calculateMinPrice(data) : null;
-        String oldestDate = includeStats ? formatTimestamp(findOldestTimestamp(data)) : null;
-        String newestDate = includeStats ? formatTimestamp(findNewestTimestamp(data)) : null;
-        BigDecimal normalizedRange = includeNormalized ? calculateNormalizedRange(calculateMinPrice(data), calculateMaxPrice(data)) : BigDecimal.TEN;
+        CryptoModel.CryptoModelBuilder builder = CryptoModel.builder();
+        BigDecimal maxPrice = calculateMaxPrice(data);
+        BigDecimal minPrice = calculateMinPrice(data);
 
-        return CryptoModel.builder()
-                .currencyCode(currencyCode)
-                .maxPrice(maxPrice)
-                .minPrice(minPrice)
-                .normalizedRange(normalizedRange)
-                .newestDateTime(newestDate)
-                .oldestDateTime(oldestDate)
-                .build();
+        if (includeStats) {
+            builder
+                    .maxPrice(maxPrice)
+                    .minPrice(minPrice)
+                    .oldestPrice(calculateOldestPrice(data))
+                    .newestPrice(calculateNewestPrice(data));
+        } else if(includeNormalized) {
+            builder
+                    .normalizedRange(calculateNormalizedRange(minPrice, maxPrice));
+        }
+
+        return builder.build();
     }
 
     private CryptoModel calculateStatsByDateRange(LocalDateTime start, LocalDateTime end) {
@@ -183,18 +185,18 @@ public class CryptoStatsServiceImpl implements CryptoStatsService {
                 .orElse(BigDecimal.ZERO);
     }
 
-    private long findOldestTimestamp(List<CryptoCurrency> data) {
+    private BigDecimal calculateOldestPrice(List<CryptoCurrency> data) {
         return data.stream()
-                .map(CryptoCurrency::getTimestamp)
-                .min(Long::compareTo)
-                .orElse(0L);
+                .min(Comparator.comparingLong(CryptoCurrency::getTimestamp))
+                .map(CryptoCurrency::getPrice)
+                .orElse(BigDecimal.ZERO);
     }
 
-    private long findNewestTimestamp(List<CryptoCurrency> data) {
+    private BigDecimal calculateNewestPrice(List<CryptoCurrency> data) {
         return data.stream()
-                .map(CryptoCurrency::getTimestamp)
-                .max(Long::compareTo)
-                .orElse(0L);
+                .max(Comparator.comparingLong(CryptoCurrency::getTimestamp))
+                .map(CryptoCurrency::getPrice)
+                .orElse(BigDecimal.ZERO);
     }
 
     private BigDecimal calculateNormalizedRange(BigDecimal min, BigDecimal max) {

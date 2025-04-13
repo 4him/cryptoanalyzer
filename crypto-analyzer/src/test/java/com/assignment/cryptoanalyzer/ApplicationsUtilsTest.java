@@ -16,9 +16,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -36,8 +38,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class)
+//@ExtendWith(SpringExtension.class)
+//@ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class)
+//@EnableConfigurationProperties(value = ApplicationProp.class)
+@SpringBootTest
 @EnableConfigurationProperties(value = ApplicationProp.class)
 public class ApplicationsUtilsTest {
 
@@ -63,8 +67,8 @@ public class ApplicationsUtilsTest {
         cryptoService = new CryptoServiceImpl(cryptoRepository, fileService);
         cryptoStatsService = new CryptoStatsServiceImpl(applicationProp, cryptoService, converter);
 
-        currencyCache.put("BTC", List.of(new CryptoCurrency(null, 1641009600000L, "BTC", BigDecimal.valueOf(46813.21))));
         when(applicationProp.getCurrencyCode()).thenReturn(List.of("BTC", "ETH"));
+        currencyCache.put("BTC", List.of(new CryptoCurrency(null, 1641009600000L, "BTC", BigDecimal.valueOf(46813.21))));
     }
 
     @Test
@@ -122,7 +126,7 @@ public class ApplicationsUtilsTest {
     }
 
     @Test
-    void testGetStatsForCurrency_returnsCorrectStats() {
+    void getStatsForCurrency_returnsCorrectStats() {
         // Mock данных
         CryptoCurrency cryptoCurrency1 = new CryptoCurrency(null, 1641009600000L, "BTC", BigDecimal.valueOf(46813.21));
         CryptoCurrency cryptoCurrency2 = new CryptoCurrency(null, 1641013200000L, "BTC", BigDecimal.valueOf(47000.00));
